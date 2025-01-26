@@ -1,0 +1,13 @@
+- name: Criar grupo acesso_ssh
+  ansible.builtin.group:
+    name: acesso_ssh
+    state: present
+
+- name: Criar Usuários
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups: acesso_ssh
+    state: present
+  loop:
+   - isabel
+   - ifpb

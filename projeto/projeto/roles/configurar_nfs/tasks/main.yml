@@ -1,0 +1,17 @@
+- name: Configurar NFS
+  block:
+    - name: Instalar NFS
+      apt:
+        name: nfs-kernel-server
+        state: present
+
+    - name: Criar diretório NFS
+      file:
+        path: /dados/nfs
+        state: directory
+
+    - name: Configurar Exportação
+      lineinfile:
+        path: /etc/exports
+        line: "/dados/nfs 192.168.57.0/24(rw,sync,no_root_squash)"
+

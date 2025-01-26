@@ -1,0 +1,14 @@
+- name: Configurar Monitoramento de Acessos
+  copy:
+    content: |
+      #!/bin/bash
+      echo "$(date '+%Y-%m-%d %H:%M');$PAM_USER;$PAM_TTY;$PAM_RHOST" >> /dados/nfs/acessos
+    dest: /usr/local/bin/monitor_acesso.sh
+    mode: "0755"
+
+- name: Configurar PAM para Monitoramento
+  lineinfile:
+    path: /etc/pam.d/sshd
+    line: "session required pam_exec.so /usr/local/bin/monitor_acesso.sh"
+    state: present
+

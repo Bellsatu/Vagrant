@@ -46,21 +46,21 @@ O Playbook Ansible define a execução das tarefas, as mesmas são organizadas e
 
 As roles, são um agrupamento de tarefas que podem ser reutilizadas para a configuração de servidores ou de sistemas. No projeto foi solicitado os tipos de tarefas a serem desenvolvidas. 
 
-### **Atualizar_sistema:** Atualiza os pacotes e o sistema operacional.
+### **Atualizar Sistema** Atualiza os pacotes e o sistema operacional.
        
          - name: Atualizar Sistema Operacional  
         apt:  
           update_cache: yes  
           upgrade: dist
        
-### **Configurar hostname** 
+### **Configurar Hostname** 
 Define o nome do host para o sistema.
 
       - name: Configurar Hostname  
         hostname:  
           name: "p01-Isabel"
 
-### **Criar usuários** 
+### **Criar Usuários** 
 Cria contas de usuários e define suas permissões, senhas ou chaves SSH.
 
       - name: Criar grupo aceso_ssh  
@@ -83,7 +83,7 @@ Cria contas de usuários e define suas permissões, senhas ou chaves SSH.
           - ifpb
 
 
-### **Mensagem de saudação:** 
+### **Mensagem de Saudação:** 
 Configura uma mensagem de boas-vindas (motd) exibida no terminal ao fazer login.
 
       - name: Configurar Mensagem de Saudação  
@@ -93,7 +93,7 @@ Configura uma mensagem de boas-vindas (motd) exibida no terminal ao fazer login.
             Seu acesso está sendo monitorado !!!  
           dest: /etc/motd
 
-### **Configurar sudo** 
+### **Configurar Sudo** 
 Configura permissões de usuários para usar o comando sudo.
       
       - name: Permitir que o grupo "ifpb" tenha acesso SUDO  
@@ -102,7 +102,7 @@ Configura permissões de usuários para usar o comando sudo.
           content: "%ifpb ALL=(ALL) NOPASSWD:ALL"  
           mode: "0440"
 
-### **Configurar ssh** 
+### **Configurar SSH** 
 
 A ação realiza a alteração da configuração do SSH para permitir apenas a autenticação por chaves públicas, desativando a autenticação por senha. Em seguida, modifica a configuração para bloquear o login do usuário root via SSH, garantindo maior segurança. Por fim, o serviço SSH é reiniciado para que as novas configurações entrem em vigor.
 
@@ -125,7 +125,7 @@ A ação realiza a alteração da configuração do SSH para permitir apenas a a
           name: ssh  
           state: restarted
 
-### **Configurar lvm** 
+### **Configurar LVM** 
 A tarefa realiza a instalação dos pacotes necessários para utilizar a funcionalidade LVM (Logical Volume Management). Em seguida, cria um grupo de volumes chamado "dados" e um volume lógico chamado "sistema", com o tamanho especificado. Após a criação do volume lógico, ele é formatado no sistema de arquivos ext4. Finalmente, um diretório é criado para que o volume lógico seja montado corretamente no sistema.
 
       - name: Instalar pacotes necessários para LVM  
@@ -159,7 +159,7 @@ A tarefa realiza a instalação dos pacotes necessários para utilizar a funcion
         notify:  
           - Montar partição
 
-### **Configurar nfs** 
+### **Configurar NFS** 
 Configura o serviço NFS para compartilhamento de arquivos entre sistemas.
 Esta tarefa realiza a instalação dos pacotes necessários para o servidor NFS, cria um usuário específico que não pode realizar login diretamente, configura o diretório compartilhado pelo NFS, adiciona as permissões adequadas no arquivo /etc/exports para permitir o acesso à rede local e reinicia o serviço do servidor NFS após as configurações.
 
@@ -204,7 +204,7 @@ Esta tarefa realiza a instalação dos pacotes necessários para o servidor NFS,
 O conteúdo descreve a tarefa, que consiste em configurar um script de monitoramento de acessos. O módulo copy é utilizado para criar ou modificar arquivos no destino especificado. A diretiva dest define o caminho onde o script será salvo, que é /etc/profile.d/monitor_acesso.sh. 
 #
 # Testes e funcionalidade
-###Verificação da conectividade.
+### Verificação da conectividade.
 
       samuel@samuel-Latitude-5430:~/Downloads/projetos$ ssh isabel@192.168.57.10  
       Linux p01-Isabel 6.1.0-29-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.123-1 (2025-01-02) x86_64  
@@ -242,9 +242,55 @@ O conteúdo descreve a tarefa, que consiste em configurar um script de monitoram
       /dados/nfs 192.168.57.0/24(sync,wdelay,hide,no_subtree_check,anonuid=1001,anongid=1001,sec=sys,rw,secure,no_root_squash,no_all_squash)  
       $
 
+      
+### LVM
 
+      $ sudo blkid  
+      sudo: unable to resolve host p01-Isabel: Temporary failure in name resolution  
+      /dev/sdb: UUID="S3ME08-MTej-CCXX-11yG-tId-0dp6-93uphI" TYPE="LVM2_member"  
+      /dev/sdb1: UUID="V5rI51-Br9b-dgAk-NZnq-zYKj-FpVj-GJdtRx" TYPE="LVM2_member"  
+      /dev/mapper/dados-sistema: UUID="8b7b1fa9-3757-4ae8-a6d4-314e8c458124" BLOCK_SIZE="4096" TYPE="ext4"  
+      /dev/sdc: UUID="rcFaXt-6NSv-qcBd-AyB4-Tp60-Plf-OJdQit" TYPE="LVM2_member"  
+      /dev/sda1: UUID="5b9b976f-334e-4d64-89e9-5309f9c88998" BLOCK_SIZE="4096" TYPE="ext4" PARTUUID="1923d3e-01"  
+      PE="ext4"  
+      
+      $ df -h  
+      Filesystem      Size  Used Avail Use% Mounted on  
+      udev            459M     0  459M   0% /dev  
+      tmpfs           97M   536K   96M   1% /run  
+      /dev/sda1       98G  1.7G   92G   2% /  
+      tmpfs           481M     0  481M   0% /dev/shm  
+      tmpfs           5.0M     0  5.0M   0% /run/lock  
+      tmpfs           97M     0   97M   0% /run/user/1000  
+      vagrant        206G   30G  177G  15% /vagrant  
+      /dev/mapper/dados-sistema  15G   24K   14G   1% /dados  
+      tmpfs           97M     0   97M   0% /run/user/1001  
+      
+      $ cat /etc/fstab  
+      # /etc/fstab: static file system information.  
+      # <file sys>    <mount point>  <type>  <options>         <dump>  <pass>  
+      # device during installation: /dev/loop0p1  
+      UUID=5b9b976f-334e-4d64-89e9-5309f9c88998 / ext4 rw,discard,errors=remount-ro 0 0  
+      #VAGRANT-BEGIN  
+      # The contents below are automatically generated by Vagrant. Do not modify.  
+      vagrant  /vagrant vboxsf uid=1000,gid=1000,_netdev 0 0  
+      #VAGRANT-END  
+      /dev/dados/sistema /dados ext4 defaults 0 0  
+      $
 
+### SSH PASSWORD E ROOT 
 
+      $ sudo cat /etc/ssh/sshd_config | grep PasswordAuthentication  
+      sudo: unable to resolve host p01-Isabel: Temporary failure in name resolution  
+      PasswordAuthentication no  
+      # PasswordAuthentication. Depending on your PAM configuration,  
+      # PAM authentication, then enable this but set PasswordAuthentication  
+      no  
+      
+      $ sudo cat /etc/ssh/sshd_config | grep PermitRootLogin  
+      sudo: unable to resolve host p01-Isabel: Temporary failure in name resolution  
+      #PermitRootLogin prohibit-password  
+      PermitRootLogin no
    
    
       

@@ -1,6 +1,0 @@
-- name: Configurar Grupo SUDO
-  lineinfile:
-    path: /etc/sudoers
-    state: present
-    line: "%ifpb ALL=(ALL) NOPASSWD:ALL"
-

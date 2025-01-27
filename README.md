@@ -61,7 +61,7 @@ Define o nome do host para o sistema.
           name: "p01-Isabel"
 
 ### **Criar Usuários** 
-Cria contas de usuários e define suas permissões, senhas ou chaves SSH.
+O objetivo é configurar rapidamente um ambiente com grupos e usuários, facilitando o controle de acesso, especialmente para conexões via SSH.
 
       - name: Criar grupo aceso_ssh  
         ansible.builtin.group:  
@@ -94,7 +94,7 @@ Configura uma mensagem de boas-vindas (motd) exibida no terminal ao fazer login.
           dest: /etc/motd
 
 ### **Configurar Sudo** 
-Configura permissões de usuários para usar o comando sudo.
+O código permite que os membros do grupo ifpb tenham acesso sudo sem exigir senha, criando um arquivo de configuração apropriado em /etc/sudoers.d/.
       
       - name: Permitir que o grupo "ifpb" tenha acesso SUDO  
         copy:  

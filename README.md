@@ -26,9 +26,13 @@ A partir de palavras-chave e comandos (módulos e parâmetros), o Ansible possib
 
 # 4. Projeto
 ### Vagrant
+      # -*- mode: ruby -*-
+   # vi: set ft=ruby :
+   # Before execute this Vagrant File, Type the command below in your Linux Terminal
+   #   export VAGRANT_EXPERIMENTAL="disks"
    
-
-
+   # Vagrantfile 
+  
 
 
 

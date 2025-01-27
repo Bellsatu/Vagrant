@@ -25,6 +25,9 @@ Quase todos os parâmetros do Ansible são baseados em arquivos .yaml, como play
 A partir de palavras-chave e comandos (módulos e parâmetros), o Ansible possibilita o desenvolvimento de todos os processos de automação de forma eficiente e escalável.
 
 # 4. Projeto
+### Vagrant
+   
+
 
 
 

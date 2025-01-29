@@ -3,7 +3,7 @@
 ### Aluno(a): *Samuel Araújo Cabral e Silva* Matrícula: *20242380040*
 ### Professor: *Pedro Filho*
 #                                    
-# Vagrant e Ansible
+# Projeto de Infraestrutura com Vagrant e Ansible
 
 # 1. Introdução
 Grandes avanços no mundo digital tornam evidente que o uso de ferramentas de automação e virtualização é essencial para aumentar a eficiência e reduzir significativamente os erros. O Vagrant e o Ansible são exemplos de tecnologias amplamente utilizadas nesse contexto.
